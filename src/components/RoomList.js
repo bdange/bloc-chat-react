@@ -30,6 +30,7 @@ handleChange(e){
 }
 
 createRoom(e){
+  e.preventDefault();
   this.roomsRef.push({ name: this.state.newRoomName});
   this.setState ({ name: ""});
 }
@@ -45,7 +46,8 @@ render() {
  }
  </section>
  <section>
-   <form id="create-room" onSubmit={this.createRoom}>
+ {this.props.user !== null &&
+   <form id="create-room" onSubmit={(e) => this.createRoom(e)}>
      <input
      type="text"
      value={this.state.newRoomName}
@@ -55,6 +57,7 @@ render() {
      />
      <input type="submit" value="+" />
   </form>
+}
   </section>
 </div>
   );
