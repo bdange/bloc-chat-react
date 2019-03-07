@@ -40,10 +40,9 @@ render() {
 <div>
  <section>
  {
-   this.state.rooms.map(room => (
-     <li>{room.name}</li>
-   ))
- }
+   this.state.rooms.map( (room, index) =>
+     <li key={index}>{room.name}</li>
+   )};
  </section>
  <section>
  {this.props.user !== null &&
