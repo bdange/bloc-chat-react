@@ -6,7 +6,8 @@ class RoomList extends Component {
 
 this.state = {
   rooms: [],
-  name: ''
+  name: '',
+  newRoomName: ''
 };
 
 this.roomsRef = this.props.firebase.database().ref("rooms");
@@ -31,8 +32,10 @@ handleChange(e){
 
 createRoom(e){
   e.preventDefault();
+  if (!this.state.newRoomName) { return }
+  const newRoom = this.state.name;
   this.roomsRef.push({ name: this.state.newRoomName});
-  this.setState ({ name: ""});
+  this.setState ({ newRoomName: ''});
 }
 
 render() {
@@ -50,7 +53,7 @@ render() {
      <input
      type="text"
      value={this.state.newRoomName}
-     onChange={this.handleChange}
+     onChange={(e) => this.handleChange(e)}
      name="newRoomName"
      placeholder="Create a new room"
      />
