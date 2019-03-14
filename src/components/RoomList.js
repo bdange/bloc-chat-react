@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 
 class RoomList extends Component {
   constructor(props){
@@ -34,18 +34,25 @@ createRoom(e){
   e.preventDefault();
   if (!this.state.newRoomName) { return }
   const newRoom = this.state.name;
-  this.roomsRef.push({ name: this.state.newRoomName});
+  this.roomsRef.push({ name: this.state.newRoomName
+  });
   this.setState ({ newRoomName: ''});
+}
+
+handleRoomClick(room) {
+  this.props.setActiveRoom(room);
 }
 
 render() {
   return(
 <div>
  <section>
+ <ul>
  {
    this.state.rooms.map( (room, index) =>
-     <li key={index}>{room.name}</li>
+     <li key={index} onClick={() => this.handleRoomClick(room)}>{room.name}</li>
    )}
+   </ul>
  </section>
  <section>
  {this.props.user !== null &&
