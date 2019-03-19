@@ -50,7 +50,7 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
           />
           <MessageList firebase={firebase} activeRoom={this.state.activeRoom} createMessage={this.createMessage} />
           <User firebase={firebase} user={this.state.user} setUser={function(user) {
-            this.setState({ user: user});}.bind(this) }/> 
+            this.setState({ user: user});}.bind(this) }/>
         </div>
       );
     }

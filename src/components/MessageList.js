@@ -5,21 +5,29 @@ class MessageList extends Component {
     super(props);
     this.state = {
       content: '',
+      messages: [],
     };
     this.messagesRef = this.props.firebase.database().ref("messages");
+    this.handleChange = this.handleChange.bind(this);
+    this.createMessage = this.createMessage.bind(this);
   }
 
   componentDidMount() {
-    this.messagesRef.on("child_added", snapshot => {
+    this.messageRef.on('child_added', snapshot => {
       const message = snapshot.val();
-      message.key = snapshot.key;
-      this.setState({ messages: this.state.messages.concat(message) });
+      const key = snapshot.key;
+      if(message.roomId === this.state.selectedRoom){
+        this.setState({messages: {...this.state.messages, [key]: message}
     });
   }
 
   handleChange(e){
     const newMessage = e.target.value;
-    this.setState({newMessage: newMessage});
+    this.setState({content: content});
+  };
+
+  sendMessage(message){
+    messageRef.push(message);
   }
 
   createMessage(e) {
@@ -70,7 +78,7 @@ class MessageList extends Component {
          </section>
       </div>
     );
-  }
+  };
 }
 
 export default MessageList;
