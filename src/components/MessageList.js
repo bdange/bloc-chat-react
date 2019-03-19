@@ -29,10 +29,6 @@ class MessageList extends Component {
     this.setState({newMessage: newMessage});
   }
 
-  sendMessage(message){
-    messageRef.push(message);
-  }
-
   createMessage(e) {
     e.preventDefault();
     const message = {
@@ -41,7 +37,7 @@ class MessageList extends Component {
       sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
       username: this.props.user
     }
-    this.props.sendMessage(message);
+    this.props.messageRef.push(message);
     this.setState({ content: ''});
   }
 
