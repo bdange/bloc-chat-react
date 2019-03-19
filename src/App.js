@@ -33,7 +33,10 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
       super(props);
       this.state = {
         activeRoom: { key: 0, name: "" },
-        user: ''
+        user: '',
+        rooms: {},
+        selectedRoom: null,
+        messages: {}
       };
     }
     render() {
@@ -45,8 +48,9 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
               this.setState({ activeRoom: newActiveRoom });
             }.bind(this)}
           />
-          <MessageList firebase={firebase} activeRoom={this.state.activeRoom} />
-          <User firebase={firebase} user={this.state.user} />
+          <MessageList firebase={firebase} activeRoom={this.state.activeRoom} createMessage={this.createMessage} />
+          <User firebase={firebase} user={this.state.user} setUser={function(user) {
+            this.setState({ user: user});}.bind(this) }/>
         </div>
       );
     }
