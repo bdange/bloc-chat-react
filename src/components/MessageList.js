@@ -12,19 +12,22 @@ class MessageList extends Component {
     this.createMessage = this.createMessage.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
     this.messageRef.on('child_added', snapshot => {
       const message = snapshot.val();
       const key = snapshot.key;
       if(message.roomId === this.state.selectedRoom){
         this.setState({messages: {...this.state.messages, [key]: message}
-    });
-  }
+        });
+      }
+  };
+}
+
 
   handleChange(e){
     const newMessage = e.target.value;
     this.setState({content: content});
-  };
+  }
 
   sendMessage(message){
     messageRef.push(message);
