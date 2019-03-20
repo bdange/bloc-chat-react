@@ -48,12 +48,12 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
           />
           </div>
           <div className="message-container">
-          <MessageList firebase={firebase} activeRoom={this.state.activeRoom} createMessage={this.createMessage} />
+          <MessageList firebase={firebase} activeRoom={this.state.activeRoom} username={this.state.user ? this.state.user.displayName : "Guest"}/>
           </div>
           <div className="user-container">
           <User firebase={firebase} user={this.state.user} setUser={function(user) {
             this.setState({ user: user});}.bind(this) }/>
-          </div> 
+          </div>
         </div>
       );
     }

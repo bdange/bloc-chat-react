@@ -5,7 +5,10 @@ class MessageList extends Component {
     super(props);
     this.state = {
       messages: [],
-      newMessage: ""
+      username: '',
+      content: '',
+      sentAt: '',
+      roomId: ''
     };
 
     this.messagesRef = this.props.firebase.database().ref("messages");
@@ -17,23 +20,18 @@ class MessageList extends Component {
   componentDidMount(){
     this.messagesRef.on('child_added', snapshot => {
       const message = snapshot.val();
-      const key = snapshot.key;
+      message.key = snapshot.key;
       this.setState({messages: this.state.messages.concat(message)})
       });
     }
 
-
-  handleChange(e){
-    const newMessage = e.target.value;
-    this.setState({newMessage: newMessage});
-  }
 
   createMessage() {
     this.messagesRef.push ({
       content: this.state.newMessage,
       roomId: this.props.activeRoom.key,
       sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
-      username: this.props.user
+      username: this.props.username
     });
 }
 
@@ -44,6 +42,11 @@ class MessageList extends Component {
     }
     this.createMessage(this.state.newMessage);
     this.setState({newMessage: ''});
+  }
+
+  handleChange(e){
+    const newName =  e.target.value;
+    this.setState({newMessage: newName});
   }
 
   render() {
@@ -66,18 +69,18 @@ class MessageList extends Component {
           </ul>
         </section>
         <section>
-        {this.props.user !== null &&
-          <form id="create-message" onSubmit={(e) => this.handleSubmit(e)}>
+        <div className="create-message" >
+          <form onSubmit={e => this.handleSubmit(e)}>
             <input
             type="text"
             value={this.state.newMessage}
-            onChange={(e) => this.handleChange(e)}
-            name="newMessage"
+            onChange={e=> this.handleChange(e)}
+            className="newMessage"
             placeholder="Send a new message"
             />
             <input type="submit" value="send" />
          </form>
-       }
+         </div>
          </section>
       </div>
     );
