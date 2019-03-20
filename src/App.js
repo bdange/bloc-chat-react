@@ -53,7 +53,7 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
           <div className="user-container">
           <User firebase={firebase} user={this.state.user} setUser={function(user) {
             this.setState({ user: user});}.bind(this) }/>
-          </div>
+          </div> 
         </div>
       );
     }
