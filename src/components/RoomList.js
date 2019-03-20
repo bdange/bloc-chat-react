@@ -28,7 +28,7 @@ componentDidMount() {
 handleChange(e){
   const newName = e.target.value;
   this.setState({newRoomName: newName});
-}
+} 
 
 createRoom(e){
   e.preventDefault();
