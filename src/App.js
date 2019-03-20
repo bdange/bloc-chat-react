@@ -33,24 +33,27 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
       super(props);
       this.state = {
         activeRoom: { key: 0, name: "" },
-        user: '',
-        rooms: {},
-        selectedRoom: null,
-        messages: {}
+        user: {},
       };
     }
     render() {
       return (
         <div className="App">
+        <div className="room-container">
           <RoomList
             firebase={firebase}
             setActiveRoom={function(newActiveRoom) {
               this.setState({ activeRoom: newActiveRoom });
             }.bind(this)}
           />
+          </div>
+          <div className="message-container">
           <MessageList firebase={firebase} activeRoom={this.state.activeRoom} createMessage={this.createMessage} />
+          </div>
+          <div className="user-container">
           <User firebase={firebase} user={this.state.user} setUser={function(user) {
             this.setState({ user: user});}.bind(this) }/>
+          </div>
         </div>
       );
     }

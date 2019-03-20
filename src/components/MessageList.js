@@ -4,22 +4,21 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '',
       messages: [],
+      newMessage: ""
     };
-    this.messageRef = this.props.firebase.database().ref("messages");
+
+    this.messagesRef = this.props.firebase.database().ref("messages");
     this.handleChange = this.handleChange.bind(this);
     this.createMessage = this.createMessage.bind(this);
   }
 
 
   componentDidMount(){
-    this.messageRef.on('child_added', snapshot => {
+    this.messagesRef.on('child_added', snapshot => {
       const message = snapshot.val();
       const key = snapshot.key;
-      if(message.roomId === this.state.selectedRoom){
-        this.setState({messages: {...this.state.messages, [key]: message}
-        })};
+      this.setState({messages: this.state.messages.concat(message)})
       });
     }
 
@@ -29,16 +28,22 @@ class MessageList extends Component {
     this.setState({newMessage: newMessage});
   }
 
-  createMessage(e) {
-    e.preventDefault();
-    const message = {
-      content: this.state.content,
-      roomId: this.props.roomId,
+  createMessage() {
+    this.messagesRef.push ({
+      content: this.state.newMessage,
+      roomId: this.props.activeRoom.key,
       sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
       username: this.props.user
+    });
+}
+
+  handleSubmit(e){
+    e.preventDefault();
+    if (!this.state.newMessage){
+      return;
     }
-    this.props.messageRef.push(message);
-    this.setState({ content: ''});
+    this.createMessage(this.state.newMessage);
+    this.setState({newMessage: ''});
   }
 
   render() {
@@ -55,7 +60,6 @@ class MessageList extends Component {
                     {new Date(message.sentAt).toString()}
                     {message.username}
                     {message.content}
-                    {message.roomId}
                   </li>
                 );
               })}
@@ -63,11 +67,11 @@ class MessageList extends Component {
         </section>
         <section>
         {this.props.user !== null &&
-          <form id="create-message" onSubmit={(e) => this.createMessage(e)}>
+          <form id="create-message" onSubmit={(e) => this.handleSubmit(e)}>
             <input
             type="text"
             value={this.state.newMessage}
-            onChange={(e) => this.setState({newMessage: e.target.value})}
+            onChange={(e) => this.handleChange(e)}
             name="newMessage"
             placeholder="Send a new message"
             />
