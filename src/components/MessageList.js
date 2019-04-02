@@ -55,7 +55,7 @@ class MessageList extends Component {
   }
 
   deleteMessage(message) {
-    const deleteMessageRef = this.props.firebase().ref(message.key);
+    const deleteMessageRef = this.messagesRef.child(message.key);
     deleteMessageRef.remove();
   }
 
