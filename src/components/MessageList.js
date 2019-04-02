@@ -14,6 +14,7 @@ class MessageList extends Component {
     this.messagesRef = this.props.firebase.database().ref("messages");
     this.handleChange = this.handleChange.bind(this);
     this.createMessage = this.createMessage.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +22,12 @@ class MessageList extends Component {
       const message = snapshot.val();
       message.key = snapshot.key;
       this.setState({ messages: this.state.messages.concat(message) });
+    });
+    this.messagesRef.on("child_removed", snapshot => {
+      const message = snapshot.val();
+      message.key = snapshot.key;
+      let messages = this.state.messages.filter(msg => msg.key !== message.key);
+      this.setState({ messages: messages });
     });
   }
 
@@ -48,8 +55,8 @@ class MessageList extends Component {
   }
 
   deleteMessage(message) {
-    let newRef = this.messagesRef(message.index);
-    newRef.remove();
+    const deleteMessageRef = this.props.firebase().ref(message.key);
+    deleteMessageRef.remove();
   }
 
   render() {
